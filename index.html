@@ -3,114 +3,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-    <style>
-      body {
-        font-family: "Lato", sans-serif;
-      }
-
-      .sidenav {
-        height: 100%;
-        width: 0;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        background-color: #111;
-        overflow-x: hidden;
-        transition: 0.5s;
-        padding-top: 60px;
-      }
-
-      .sidenav a {
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 25px;
-        color: #818181;
-        display: block;
-        transition: 0.3s;
-      }
-
-      .sidenav a:hover {
-        color: #f1f1f1;
-      }
-
-      .sidenav .closebtn {
-        position: absolute;
-        top: 0;
-        right: 25px;
-        font-size: 36px;
-        margin-left: 50px;
-      }
-
-      @media screen and (max-height: 450px) {
-        .sidenav {
-          padding-top: 15px;
-        }
-
-        .sidenav a {
-          font-size: 18px;
-        }
-      }
-
-      .Header {
-        width: 100%;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: black;
-        background-color: rgb(217, 255, 1);
-      }
-
-      .Footer {
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: rgb(255, 0, 0);
-      }
-      .inner-Footer {
-        font-size: 20px;
-        margin-left: 40px;
-        margin-right: 40px;
-        color: white;
-        text-align: center;
-        height: 50px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-    </style>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="leftsidebar.css" />
   </head>
 
   <body>
     <div class="Header" style="position: absolute; z-index: 1000">
-      <h1>FOOD MENU</h1>
-    </div>
-    <div class="Footer" style="position: absolute; z-index: 1000">
-      <div class="inner-Footer">
-        <div>ITEMS</div>
-
-        <div>BACK</div>
-        <div>CART</div>
-        <div>NEXT</div>
-
-        <div>exit</div>
+      <div class="inner-Header">
+        <div>
+          <button class="menu-btn" onclick="openleftsidebar()">
+            <img class="Cart" src="/assets/menu.png" alt="menu" />
+          </button>
+        </div>
+        <div></div>
+        <div>
+          <button class="menu-btn" onclick="help()">
+            <img
+              class="Cart"
+              src="assets/question mark.png"
+              alt="question mark "
+            />
+          </button>
+        </div>
       </div>
     </div>
 
-    <script>
-      function openNav() {
-        document.getElementById("mySidenav").style.width = "250px";
-      }
+    <div class="Footer" style="position: absolute; z-index: 1000">
+      <div class="inner-Footer">
+        <div>
+          <img class="Cart" src="/assets/arrow.png" alt="back arrow " />
+        </div>
+        <div>
+          <button class="menu-btn" onclick="openrightsidebar()">
+            <img class="Cart" src="/assets/shopping-cart.png" alt="Cart " />
+          </button>
+        </div>
+        <div>
+          <img class="next" src="/assets/arrow.png" alt="next arrow " />
+        </div>
+      </div>
+    </div>
+    <div style="position: absolute; z-index: 2000">
+      <div id="leftsidebar" class="leftsidebar">
+        <a
+          href="javascript:void(0)"
+          class="closebtn"
+          onclick="closeleftSidebar()"
+          >&times;</a
+        >
+        <a href="#">Pizza</a>
+        <a href="#">Slice</a>
+        <a href="#">Omlete</a>
+        <a href="#">Burger</a>
+      </div>
 
-      function closeNav() {
-        document.getElementById("mySidenav").style.width = "0";
-      }
-    </script>
+      <div id="rightsidebar" class="rightsidebar">
+        <a
+          href="javascript:void(0)"
+          class="closebtn"
+          onclick="closerightsidebar()"
+          >&times;</a
+        >
+        <a href="#">Item1</a>
+        <a href="#">Item2</a>
+        <a href="#">Item3</a>
+        <a href="#">Item4</a>
+      </div>
+    </div>
     <a-scene
-      mindar-image="imageTargetSrc: ./assets/dishestargets.mind;"
-      color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights"
+      mindar-image="imageTargetSrc: ./assets/dishestargets.mind; uiError:no; uiLoading:no; uiScanning:no"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
     >
@@ -128,9 +89,14 @@
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-gltf-model rotation="90 0 0 " position="0 0 0" scale="10 10 10"
-        src="#avatarModel"
+        <a-gltf-model
+          rotation="90 0 0"
+          position="0 0 0"
+          scale="10 10 10"
+          src="#avatarModel"
+        ></a-gltf-model>
       </a-entity>
     </a-scene>
+    <script src="index.js"></script>
   </body>
 </html>
