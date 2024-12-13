@@ -1,5 +1,5 @@
 function openrightsidebar() {
-  document.getElementById("rightsidebar").style.width = "250px";
+  document.getElementById("rightsidebar").style.width = "100%";
   document.getElementById("leftsidebar").style.width = "0";
 }
 
@@ -8,7 +8,7 @@ function closerightsidebar() {
 }
 
 function openleftsidebar() {
-  document.getElementById("leftsidebar").style.width = "250px";
+  document.getElementById("leftsidebar").style.width = "100%";
   document.getElementById("rightsidebar").style.width = "0";
 }
 
