@@ -27,6 +27,16 @@
         </div>
       </div>
     </div>
+    <div class="top-footer" class="position: absolute; z-index: 1000">
+      <div class="inner-top-footer">
+        <div></div>
+        <div></div>
+        <div>
+          <div id="price"></div>
+          <button class="addcart">Add Cart</button>
+        </div>
+      </div>
+    </div>
 
     <div class="Footer" style="position: absolute; z-index: 1000">
       <div class="inner-Footer">
@@ -40,9 +50,16 @@
             />
           </button>
         </div>
-        <div>
+        <div class="cart-container">
           <button class="menu-btn" onclick="openrightsidebar()">
-            <img class="Cart" src="/assets/shopping-cart.png" alt="Cart " />
+            <span class="cart-count">0</span>
+            <!-- Cart item count -->
+
+            <img
+              class="Cart cartbutton"
+              src="/assets/shopping-cart.png"
+              alt="Cart "
+            />
           </button>
         </div>
         <div>
@@ -65,9 +82,6 @@
           onclick="closeleftSidebar()"
           >&times;</a
         >
-        <a href="#" onclick="showDish('pizza')">Pizza</a>
-        <a href="#" onclick="showDish('omlete')">omlete</a>
-        <a href="#" onclick="showDish('slice')">slice</a>
       </div>
 
       <div id="rightsidebar" class="rightsidebar">
@@ -75,9 +89,12 @@
           href="javascript:void(0)"
           class="closebtn"
           onclick="closerightsidebar()"
-          >&times;</a
+          >×</a
         >
-        <a href="#">Item1</a>
+        <div id="cartItems">
+          <div id="dishModel"></div>
+          <p id="price"></p>
+        </div>
       </div>
     </div>
     <a-scene
@@ -86,18 +103,18 @@
       device-orientation-permission-ui="enabled: false"
     >
       <a-assets>
-        <a-asset-item
+        <!-- <a-asset-item
           id="model-pizza"
-          src="/assets/special pizza.glb"
+          src="/assets/untitled1.glb"
         ></a-asset-item>
         <a-asset-item
           id="model-omlete"
-          src="/assets/omlete .glb"
+          src="/assets/untitled.glb"
         ></a-asset-item>
         <a-asset-item
           id="model-slice"
           src="/assets/Pizza Slice.glb"
-        ></a-asset-item>
+        ></a-asset-item> -->
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -110,7 +127,7 @@
         ></a-gltf-model>
       </a-entity>
     </a-scene>
-    <script>
+    <!-- <script>
       const dishes = ["pizza", "omlete", "slice"];
       let currentIndex = 0;
 
@@ -130,6 +147,108 @@
         currentIndex = (currentIndex - 1 + dishes.length) % dishes.length;
         showDish(dishes[currentIndex]);
       }
+    </script> -->
+
+    <script>
+      const dishes = [
+        { name: "Pizza", id: "1", price: "100", src: "/assets/untitled1.glb" },
+        { name: "Omelette", id: "2", price: "70", src: "/assets/untitled.glb" },
+        { name: "Slice", id: "3", price: "22", src: "/assets/Pizza Slice.glb" },
+      ];
+
+      let currentIndex = 0;
+      let cart = []; // To store the items added to the cart
+
+      function renderAssets() {
+        const assetsContainer = document.querySelector("a-assets");
+        dishes.forEach((dish) => {
+          const asset = document.createElement("a-asset-item");
+          asset.setAttribute("id", `model-${dish.id}`);
+          asset.setAttribute("src", dish.src);
+          assetsContainer.appendChild(asset);
+        });
+      }
+
+      function renderSidebar() {
+        const sidebar = document.getElementById("leftsidebar");
+        dishes.forEach((dish) => {
+          const link = document.createElement("a");
+          link.href = "#";
+          link.textContent = `${dish.name} - $${dish.price}`;
+          link.onclick = () => showDish(dish.id);
+          sidebar.appendChild(link);
+        });
+      }
+
+      function loadMenuItems() {
+        const menuItems = document.getElementById("menuItems");
+        dishes.forEach((dish) => {
+          const link = document.createElement("a");
+          link.href = "#";
+          link.textContent = dish.name;
+          link.onclick = () => showDish(dish.id);
+          menuItems.appendChild(link);
+        });
+      }
+
+      function showDish(dishId) {
+        const dish = dishes.find((d) => d.id === dishId);
+        if (dish) {
+          const modelEl = document.getElementById("dishModel");
+          modelEl.innerHTML = `<a-gltf-model rotation="90 0 0" position="0 0 0" scale="10 10 10" src="#model-${dish.id}"></a-gltf-model>`;
+          document.getElementById("price").innerText = `Price: $${dish.price}`;
+          currentIndex = dishes.indexOf(dish);
+        }
+      }
+
+      // Add item to the cart
+      function addToCart() {
+        const dish = dishes[currentIndex];
+        if (dish && !cart.some((item) => item.id === dish.id)) {
+          cart.push(dish); // Add the dish to the cart
+          updateCartSidebar(); // Update the sidebar
+          updateCartCount(); // Update the cart count
+        }
+      }
+
+      // Update the sidebar to show cart items
+      function updateCartSidebar() {
+        const cartItemsEl = document.getElementById("cartItems");
+        cartItemsEl.innerHTML = ""; // Clear the current cart items
+        cart.forEach((item) => {
+          const cartItemEl = document.createElement("a");
+          cartItemEl.innerText = `${item.name} - $${item.price}`;
+          cartItemsEl.appendChild(cartItemEl);
+        });
+      }
+
+      // Update the cart count display
+      function updateCartCount() {
+        const cartCountEl = document.querySelector(".cart-count");
+        cartCountEl.innerText = cart.length; // Set the cart count to the number of items in the cart
+      }
+
+      // Add event listener to the "Add Cart" button
+      document.querySelector(".addcart").addEventListener("click", addToCart);
+
+      // Example of how to show a dish
+      showDish("1"); // Show Pizza by default
+
+      function nextDish() {
+        currentIndex = (currentIndex + 1) % dishes.length;
+        showDish(dishes[currentIndex].id);
+      }
+
+      function previousDish() {
+        currentIndex = (currentIndex - 1 + dishes.length) % dishes.length;
+        showDish(dishes[currentIndex].id);
+      }
+
+      window.onload = () => {
+        renderAssets();
+        renderSidebar();
+        loadMenuItems();
+      };
     </script>
 
     <script src="index.js"></script>

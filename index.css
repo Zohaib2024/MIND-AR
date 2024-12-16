@@ -67,6 +67,25 @@ body {
   align-items: center;
 }
 
+.top-footer {
+  position: fixed; /* Fixes the footer */
+  left: 0;
+  bottom: 100px;
+  width: 100%;
+  /* Add background if needed */
+  z-index: 1000; /* Keeps the footer on top */
+}
+
+.inner-top-footer {
+  font-size: 20px;
+  color: white;
+  text-align: center;
+  height: 80px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .inner-Header {
   font-size: 20px;
   color: black;
@@ -183,4 +202,34 @@ body {
   top: 10px;
   left: 25px;
   font-size: 36px;
+}
+.addcart {
+  /* width: 100px; */
+  padding: 10px;
+  border-radius: 10px;
+  background-color: brown;
+  color: white;
+}
+/* Container to position the button and count together */
+.cart-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Style for the button */
+
+/* Style for the cart count */
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: rgb(255, 0, 0);
+  color: rgb(229, 255, 0);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
 }
